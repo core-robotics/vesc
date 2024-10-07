@@ -78,14 +78,14 @@ VescDriver::VescDriver(const rclcpp::NodeOptions & options)
   }
 
   // create vesc state (telemetry) publisher
-  state_pub_ = create_publisher<VescStateStamped>("sensors/core", rclcpp::QoS{10});
-  imu_pub_ = create_publisher<VescImuStamped>("sensors/imu", rclcpp::QoS{10});
-  imu_std_pub_ = create_publisher<Imu>("sensors/imu/raw", rclcpp::QoS{10});
+  state_pub_ = create_publisher<VescStateStamped>("sensors/core", rclcpp::QoS(1).best_effort());
+  imu_pub_ = create_publisher<VescImuStamped>("sensors/imu", rclcpp::QoS(1).best_effort());
+  imu_std_pub_ = create_publisher<Imu>("sensors/imu/raw", rclcpp::QoS(1).best_effort());
 
   // since vesc state does not include the servo position, publish the commanded
   // servo position as a "sensor"
   servo_sensor_pub_ = create_publisher<Float64>(
-    "sensors/servo_position_command", rclcpp::QoS{10});
+    "sensors/servo_position_command", rclcpp::QoS(1).best_effort());
 
   // subscribe to motor and servo command topics
   duty_cycle_sub_ = create_subscription<Float64>(
