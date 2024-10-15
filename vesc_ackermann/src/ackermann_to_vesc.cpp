@@ -48,11 +48,18 @@ AckermannToVesc::AckermannToVesc(const rclcpp::NodeOptions & options)
 : Node("ackermann_to_vesc_node", options)
 {
   // get conversion parameters
-  speed_to_erpm_gain_ = declare_parameter("speed_to_erpm_gain").get<double>();
-  speed_to_erpm_offset_ = declare_parameter("speed_to_erpm_offset").get<double>();
-  steering_to_servo_gain_left_ = declare_parameter("steering_angle_to_servo_gain_left").get<double>();
-  steering_to_servo_gain_right_ = declare_parameter("steering_angle_to_servo_gain_right").get<double>();
-  steering_to_servo_offset_ = declare_parameter("steering_angle_to_servo_offset").get<double>();
+  declare_parameter("speed_to_erpm_gain", 0.0);
+  declare_parameter("speed_to_erpm_offset", 0.0);
+  declare_parameter("steering_angle_to_servo_gain_left", 0.0);
+  declare_parameter("steering_angle_to_servo_gain_right", 0.0);
+  declare_parameter("steering_angle_to_servo_offset", 0.0);
+
+  // 파라미터 값 가져오기
+  speed_to_erpm_gain_ = get_parameter("speed_to_erpm_gain").as_double();
+  speed_to_erpm_offset_ = get_parameter("speed_to_erpm_offset").as_double();
+  steering_to_servo_gain_left_ = get_parameter("steering_angle_to_servo_gain_left").as_double();
+  steering_to_servo_gain_right_ = get_parameter("steering_angle_to_servo_gain_right").as_double();
+  steering_to_servo_offset_ = get_parameter("steering_angle_to_servo_offset").as_double();
 
   // create publishers to vesc electric-RPM (speed) and servo commands
   erpm_pub_ = create_publisher<Float64>("commands/motor/speed", 10);

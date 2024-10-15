@@ -60,14 +60,21 @@ VescToOdom::VescToOdom(const rclcpp::NodeOptions & options)
   base_frame_ = declare_parameter("base_frame", base_frame_);
   use_servo_cmd_ = declare_parameter("use_servo_cmd_to_calc_angular_velocity", use_servo_cmd_);
 
-  speed_to_erpm_gain_ = declare_parameter("speed_to_erpm_gain").get<double>();
-  speed_to_erpm_offset_ = declare_parameter("speed_to_erpm_offset").get<double>();
+  this->declare_parameter("speed_to_erpm_gain", 0.0);
+  this->declare_parameter("speed_to_erpm_offset", 0.0);
+  speed_to_erpm_gain_ = this->get_parameter("speed_to_erpm_gain").as_double();
+  speed_to_erpm_offset_ = this->get_parameter("speed_to_erpm_offset").as_double();
 
   if (use_servo_cmd_) {
-    steering_to_servo_gain_left_ = declare_parameter("steering_angle_to_servo_gain_left").get<double>();
-    steering_to_servo_gain_right_ = declare_parameter("steering_angle_to_servo_gain_right").get<double>();
-    steering_to_servo_offset_ = declare_parameter("steering_angle_to_servo_offset").get<double>();
-    wheelbase_ = declare_parameter("wheelbase").get<double>();
+    this->declare_parameter("steering_angle_to_servo_gain_left", 0.0);
+    this->declare_parameter("steering_angle_to_servo_gain_right", 0.0);
+    this->declare_parameter("steering_angle_to_servo_offset", 0.0);
+    this->declare_parameter("wheelbase", 0.0);
+    
+    steering_to_servo_gain_left_ = this->get_parameter("steering_angle_to_servo_gain_left").as_double();
+    steering_to_servo_gain_right_ = this->get_parameter("steering_angle_to_servo_gain_right").as_double();
+    steering_to_servo_offset_ = this->get_parameter("steering_angle_to_servo_offset").as_double();
+    wheelbase_ = this->get_parameter("wheelbase").as_double();
   }
 
   publish_tf_ = declare_parameter("publish_tf", false);
