@@ -83,11 +83,11 @@ VescToOdom::VescToOdom(const rclcpp::NodeOptions & options)
 
   // subscribe to vesc state and. optionally, servo command
   vesc_state_sub_ = create_subscription<VescStateStamped>(
-    "sensors/core", 10, std::bind(&VescToOdom::vescStateCallback, this, _1));
+    "sensors/core", rclcpp::QoS(rclcpp::KeepLast(1)), std::bind(&VescToOdom::vescStateCallback, this, _1));
 
   if (use_servo_cmd_) {
     servo_sub_ = create_subscription<Float64>(
-      "sensors/servo_position_command", 10, std::bind(&VescToOdom::servoCmdCallback, this, _1));
+      "sensors/servo_position_command", rclcpp::QoS(rclcpp::KeepLast(1)), std::bind(&VescToOdom::servoCmdCallback, this, _1));
   }
 }
 
