@@ -165,7 +165,7 @@ void VescToOdom::vescStateCallback(const VescStateStamped::SharedPtr state)
     TransformStamped tf;
     tf.header.frame_id = odom_frame_;
     tf.child_frame_id = base_frame_;
-    tf.header.stamp = now();
+    tf.header.stamp = now() + rclcpp::Duration::from_seconds(0.05);
     tf.transform.translation.x = x_;
     tf.transform.translation.y = y_;
     tf.transform.translation.z = 0.0;
